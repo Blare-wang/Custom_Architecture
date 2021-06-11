@@ -5,3 +5,6 @@ server:
       enabled: true
   http2:
     enabled: true
+spring:
+  profiles:
+    active: @profiles.active@

@@ -1,0 +1,8 @@
+server:
+  port: 8084
+  servlet:
+    context-path: /framework-prod
+spring:
+  config:
+    activate:
+      on-profile: prod

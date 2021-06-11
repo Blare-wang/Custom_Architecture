@@ -1,0 +1,8 @@
+server:
+  port: 8082
+  servlet:
+    context-path: /framework-test
+spring:
+  config:
+    activate:
+      on-profile: test
