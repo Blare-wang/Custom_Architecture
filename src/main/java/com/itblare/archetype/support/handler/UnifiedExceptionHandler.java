@@ -40,7 +40,7 @@ public class UnifiedExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseDataWrapper<Object> handleException(Exception ex) {
         logger.error(ex.getMessage(), ex);
-        return ResponseDataFactory.wrapper(ex.getMessage(), String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), HttpStatus.INTERNAL_SERVER_ERROR.name());
+        return ResponseDataFactory.wrapper(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
     }
 
     /**
@@ -54,7 +54,7 @@ public class UnifiedExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseDataWrapper<?> handleBaseException(DataException ex) {
         logger.error(ex.getMessage(), ex);
-        return ResponseDataFactory.wrapper(ex.getMessage(), String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), HttpStatus.INTERNAL_SERVER_ERROR.name());
+        return ResponseDataFactory.wrapper(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
     }
 
     /**
@@ -68,15 +68,15 @@ public class UnifiedExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseDataWrapper<Object> MethodArgumentNotValidExceptionHandler(MethodArgumentNotValidException ex) {
         logger.error("方法参数错误异常");
-        List<String> list = new ArrayList<>();        // 从异常对象中拿到ObjectError对象
+        List<String> errMsgList = new ArrayList<>();        // 从异常对象中拿到ObjectError对象
         assert ex.getBindingResult() != null;
         if (!ex.getBindingResult().getAllErrors().isEmpty()) {
             for (ObjectError error : ex.getBindingResult().getAllErrors()) {
-                list.add(error.getDefaultMessage());
+                errMsgList.add(error.getDefaultMessage());
             }
         }
         // 然后提取错误提示信息进行返回
-        return ResponseDataFactory.wrapper(list, String.valueOf(HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST.name());
+        return ResponseDataFactory.wrapper(HttpStatus.BAD_REQUEST, errMsgList);
     }
 
     /**
@@ -90,7 +90,7 @@ public class UnifiedExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseDataWrapper<?> handleRuntimeException(RuntimeException ex) {
         logger.error(ex.getMessage(), ex);
-        return ResponseDataFactory.wrapper(ex);
+        return ResponseDataFactory.wrapper(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
     }
 
     /**
@@ -104,6 +104,6 @@ public class UnifiedExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseDataWrapper<Object> APIExceptionHandler(BaseException ex) {
         logger.error("api异常");
-        return ResponseDataFactory.wrapper(ex.getCode(), ex.getMessage());
+        return ResponseDataFactory.errorCodeMessage(ex.getStatus(), ex.getMessage());
     }
 }

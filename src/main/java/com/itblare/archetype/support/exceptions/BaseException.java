@@ -9,17 +9,17 @@ package com.itblare.archetype.support.exceptions;
  */
 public class BaseException extends RuntimeException {
 
-    private String code;
+    private int status;
     private String message;
 
-    public BaseException(String code, String message) {
+    public BaseException(int code, String message) {
         super(message);
-        this.code = code;
+        this.status = code;
     }
 
-    public BaseException(String code, String message, Throwable ex) {
+    public BaseException(int code, String message, Throwable ex) {
         super(message, ex);
-        this.code = code;
+        this.status = code;
         this.message = message;
     }
 
@@ -27,8 +27,8 @@ public class BaseException extends RuntimeException {
         super(exception);
     }
 
-    public String getCode() {
-        return code;
+    public int getStatus() {
+        return status;
     }
 
     public String getMessage() {
