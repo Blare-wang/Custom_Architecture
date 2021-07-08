@@ -6,3 +6,5 @@ spring:
   config:
     activate:
       on-profile: test
+logging:
+  config: classpath:log/log4j2-test.yml

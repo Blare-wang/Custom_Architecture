@@ -1,0 +1,168 @@
+# 共有8个级别，按照从低到高为：ALL < TRACE < DEBUG < INFO < WARN < ERROR < FATAL < OFF。
+# intLevel值依次为0,100,200,300,400,500,600,700
+# intLevel 值越小，级别越高
+Configuration:
+  # 日志框架本身的输出日志级别
+  status: warn
+  # 自动加载配置文件的间隔时间，单位：秒，不低于5秒
+  monitorInterval: 5
+  # packages: com.smartadmin.config.log.plugin
+  # 定义全局变量，引入到后面配置中，以List的方式配置
+  Properties:
+    # 缺省配置（用于开发环境）
+    Property:
+      # 输出文件路径
+      - name: log.path
+        value: log
+      # 项目名称
+      - name: project.name
+        value: custom_archetype
+      # 默认日志输出格式
+      - name: log.pattern
+        value: "%d{yyyy-MM-dd HH:mm:ss.SSS} -%5p ${PID:-} [%15.15t] %-30.30C{1.} : %m%n"
+        # value: "%d %highlight{%-5level}{ERROR=Bright RED, WARN=Bright Yellow, INFO=Bright Green, DEBUG=Bright Cyan, TRACE=Bright White} %style{[%t]}{bright,magenta} %style{%c{1.}.%M(%L)}{cyan}: %msg%n"
+  Appenders:
+    # 输出到控制台
+    Console:
+      name: CONSOLE
+      target: SYSTEM_OUT
+      # 指定日志级别 控制台只输出level及以上级别的信息，其他的直接拒绝
+      # onMatch：和level级别匹配， onMismatch：和 level级别不匹配
+      ThresholdFilter:
+        level: DEBUG
+        onMatch: ACCEPT
+        onMismatch: DENY
+      # 日志消息格式
+      PatternLayout:
+        pattern: ${log.pattern}
+        charset: UTF-8
+    # 输出到文件，超过128MB归档
+    RollingFile:
+      # 日志模块名称
+      - name: ROLLING_FILE
+        ignoreExceptions: false
+        # 输出文件的地址
+        fileName: ${log.path}/${project.name}.log
+        # 文件生成规则
+        filePattern: "${log.path}/$${date:yyyy-MM}/${project.name}-%d{yyyy-MM-dd}-%i.log.gz"
+        # 日志格式
+        PatternLayout:
+          pattern: ${log.pattern}
+          charset: UTF-8
+        Filters:
+          # 一定要先去除不接受的日志级别，然后获取需要接受的日志级别
+          ThresholdFilter:
+            # 日志级别
+            - level: ERROR
+              onMatch: DENY
+              onMismatch: NEUTRAL
+            - level: INFO
+              onMatch: ACCEPT
+              onMismatch: DENY
+            - level: DEBUG
+              onMatch: ACCEPT
+              onMismatch: DENY
+        # 日志拆分规则
+        Policies:
+          # 日志拆分规则
+          SizeBasedTriggeringPolicy:
+            size: 128MB
+          # 按天分类
+          TimeBasedTriggeringPolicy:
+            modulate: true
+            interval: 1
+        # 单目录下，文件最多100个，超过会删除最早之前的
+        DefaultRolloverStrategy:
+          max: 10
+      # 普通日志
+      - name: INFO_ROLLING_FILE
+        ignoreExceptions: false
+        fileName: ${log.path}/info/${project.name}_exception.log
+        filePattern: "${log.path}/info/$${date:yyyy-MM}/${project.name}-%d{yyyy-MM-dd}-%i.log.gz"
+        ThresholdFilter:
+          level: INFO
+          onMatch: ACCEPT
+          onMismatch: DENY
+        PatternLayout:
+          pattern: ${log.pattern}
+          charset: UTF-8
+        Policies:
+          TimeBasedTriggeringPolicy:
+            modulate: true
+            interval: 1
+          SizeBasedTriggeringPolicy:
+            size: 128MB
+        DefaultRolloverStrategy:
+          max: 10
+      # 警告日志
+      - name: WARN_ROLLING_FILE
+        ignoreExceptions: false
+        fileName: ${log.path}/warn/${project.name}_exception.log
+        filePattern: "${log.path}/warn/$${date:yyyy-MM}/${project.name}-%d{yyyy-MM-dd}-%i.log.gz"
+        ThresholdFilter:
+          level: WARN
+          onMatch: ACCEPT
+          onMismatch: DENY
+        PatternLayout:
+          pattern: ${log.pattern}
+          charset: UTF-8
+        Policies:
+          TimeBasedTriggeringPolicy:
+            modulate: true
+            interval: 1
+          SizeBasedTriggeringPolicy:
+            size: 128MB
+        DefaultRolloverStrategy:
+          max: 10
+      # 错误日志
+      - name: ERROE_ROLLING_FILE
+        ignoreExceptions: false
+        fileName: ${log.path}/error/${project.name}_exception.log
+        filePattern: "${log.path}/error/$${date:yyyy-MM}/${project.name}-%d{yyyy-MM-dd}-%i.log.gz"
+        ThresholdFilter:
+          level: ERROR
+          onMatch: ACCEPT
+          onMismatch: DENY
+        PatternLayout:
+          pattern: ${log.pattern}
+          charset: UTF-8
+        Policies:
+          TimeBasedTriggeringPolicy:
+            modulate: true
+            interval: 1
+          SizeBasedTriggeringPolicy:
+            size: 128MB
+        DefaultRolloverStrategy:
+          max: 10
+  Loggers:
+    Root:
+      # root的级别为info，如果为debug的话，输出的内容太多
+      level: INFO
+      includeLocation: true
+      AppenderRef:
+        - ref: CONSOLE
+        - ref: ROLLING_FILE
+        - ref: INFO_ROLLING_FILE
+        - ref: WARN_ROLLING_FILE
+        - ref: ERROE_ROLLING_FILE
+    Logger:
+      # 监听具体包下面的日志
+      - name: com.itblare
+        # 去除重复的log
+        additivity: false
+        level: DEBUG
+        AppenderRef:
+          #复数加上
+          - ref: CONSOLE
+          - ref: ROLLING_FILE
+          - ref: INFO_ROLLING_FILE
+          - ref: WARN_ROLLING_FILE
+          - ref: ERROE_ROLLING_FILE
+      - name: com.mysql
+        level: DEBUG
+      - name: org.springframework
+        level: DEBUG
+      - name: org.spring.springboot.dao
+        level: DEBUG
+      - name: org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver
+        level: DEBUG

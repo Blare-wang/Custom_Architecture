@@ -6,3 +6,5 @@ spring:
   config:
     activate:
       on-profile: prod
+logging:
+  config: classpath:log/log4j2-prod.yml
