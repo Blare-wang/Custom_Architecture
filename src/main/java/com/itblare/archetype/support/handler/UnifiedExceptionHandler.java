@@ -67,7 +67,7 @@ public class UnifiedExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseDataWrapper<Object> MethodArgumentNotValidExceptionHandler(MethodArgumentNotValidException ex) {
-        logger.error("方法参数错误异常");
+        logger.error(ex.getMessage(), ex);
         List<String> errMsgList = new ArrayList<>();        // 从异常对象中拿到ObjectError对象
         assert ex.getBindingResult() != null;
         if (!ex.getBindingResult().getAllErrors().isEmpty()) {
@@ -103,7 +103,7 @@ public class UnifiedExceptionHandler {
     @ExceptionHandler(BaseException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseDataWrapper<Object> APIExceptionHandler(BaseException ex) {
-        logger.error("api异常");
+        logger.error(ex.getMessage(), ex);
         return ResponseDataFactory.errorCodeMessage(ex.getStatus(), ex.getMessage());
     }
 }
