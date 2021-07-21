@@ -5,6 +5,8 @@ package com.itblare.archetype.api;
  * ClassName:   BaseApi
  */
 
+import com.itblare.archetype.support.annotation.ResponseWrapper;
+
 /**
  * 规则约束API（Application Programming Interface，应用程序接口）
  *
@@ -12,5 +14,6 @@ package com.itblare.archetype.api;
  * @version 1.0.0
  * @since 2021/5/28 17:43
  */
+@ResponseWrapper
 public interface BaseApi {
 }

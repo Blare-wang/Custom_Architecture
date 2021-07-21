@@ -1,0 +1,56 @@
+{
+  "serverUrl": "http://127.0.0.1:port/content-path",
+  "isStrict": false,
+  "allInOne": true,
+  "outPath": "src/main/resources/static/doc",
+  "coverOld": true,
+  "createDebugPage": true,
+  "allInOneDocFileName": "index.html",
+  "packageFilters": "com.itblare.archetype.api",
+  "md5EncryptedHtmlName": false,
+  "style":"xt256",
+  "projectName": "Custom_Archetype",
+  "showAuthor":true,
+  "requestFieldToUnderline":false,
+  "responseFieldToUnderline":false,
+  "inlineEnum":true,
+  "skipTransientField": true,
+  "requestExample": true,
+  "responseExample": true,
+  "displayActualType":true,
+  "revisionLogs": [
+    {
+      "version": "1.0.0",
+      "status": "create",
+      "author": "Blare",
+      "revisionTime": "2021-07-05",
+      "remarks": "自定义maven项目骨架开放API文档"
+    }
+  ],
+  "errorCodes": [
+    {
+      "value": "200",
+      "type": "string",
+      "desc": "响应成功"
+    }
+  ],
+  "requestHeaders": [
+    {
+      "name": "token",
+      "type": "string",
+      "desc": "占用符，可忽略！",
+      "required": false,
+      "value":"token请求头的值",
+      "since": "1.0.0"
+    }
+  ],
+  "responseBodyAdvice":{
+    "className":"com.itblare.archetype.support.result.ResponseDataWrapper"
+  },
+  "sourceCodePaths": [
+    {
+      "path": "src/main/java",
+      "desc": "设置代码路径, 插件已经能够自动下载发布的源码包，没必要配置"
+    }
+  ]
+}
