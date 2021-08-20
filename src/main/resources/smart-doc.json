@@ -6,10 +6,10 @@
   "coverOld": true,
   "createDebugPage": true,
   "allInOneDocFileName": "index.html",
-  "packageFilters": "com.itblare.archetype.api",
+  "packageFilters": "com.itblare.architecture.api",
   "md5EncryptedHtmlName": false,
   "style":"xt256",
-  "projectName": "Custom_Archetype",
+  "projectName": "Custom_Architecture",
   "showAuthor":true,
   "requestFieldToUnderline":false,
   "responseFieldToUnderline":false,
@@ -45,7 +45,7 @@
     }
   ],
   "responseBodyAdvice":{
-    "className":"com.itblare.archetype.support.result.ResponseDataWrapper"
+    "className":"com.itblare.architecture.support.result.ResponseDataWrapper"
   },
   "sourceCodePaths": [
     {
