@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.itblare</groupId>
-    <artifactId>archetype</artifactId>
+    <artifactId>architecture</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>Custom_Archetype</name>
+    <name>Custom_Architecture</name>
     <description>The architecture of the project foundation for Spring Boot（基于Spring Boot 的项目基础的骨架）</description>
     <!--全局常量-->
     <properties>
@@ -154,6 +154,10 @@
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>-->
+        <dependency>
+            <groupId>org.springframework.session</groupId>
+            <artifactId>spring-session-data-redis</artifactId>
+        </dependency>
     </dependencies>
     <!--构建配置-->
     <build>
